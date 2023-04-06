@@ -3,6 +3,7 @@ it’s an “unofficial" or "community-maintained” library.
 这是一个非官方的社区维护的库。
 OpenAi官方文档地址：https://platform.openai.com/docs/api-reference
 ## 此项目不仅仅支持chat对话模型，支持openai官方所有api，包括
+- [x] tokens计算
 - [x] Billing           余额查询
 - [x] Models            模型检索
 - [x] Completions       chatgpt对话
@@ -24,21 +25,23 @@ OpenAi官方文档地址：https://platform.openai.com/docs/api-reference
 ---|---|---|---|---
 SSE参考：[OpenAISSEEventSourceListener](https://github.com/Grt1228/chatgpt-steam-output/blob/main/src/main/java/com/unfbx/chatgptsteamoutput/listener/OpenAISSEEventSourceListener.java) | 不支持| 支持| 支持 | 支持
 WebSocket参考：[OpenAIWebSocketEventSourceListener](https://github.com/Grt1228/chatgpt-steam-output/blob/main/src/main/java/com/unfbx/chatgptsteamoutput/listener/OpenAIWebSocketEventSourceListener.java) | 支持| 支持| 支持| 支持
-### 有bug欢迎朋友们指出，互相学习。
-一起探讨chatgpt-java，SDK问题咨询<br/>项目产品开发交流 | 群满请加微信拉
----|---
-<img src="https://user-images.githubusercontent.com/27008803/225246389-7b452214-f3fe-4a70-bd3e-832a0ed34288.jpg" width="210" height="300" alt="二维码" /> | <img src="https://user-images.githubusercontent.com/27008803/225246581-15e90f78-5438-4637-8e7d-14c68ca13b59.jpg" width="210" height="300" alt="二维码" />
+### 有bug欢迎朋友们指出，互相学习，所有咨询全部免费。
+一起探讨chatgpt-java，SDK问题咨询<br/>项目产品开发交流 | 群失效关注公众号恢复：chatgpt-java | 个人微信
+---|---|---
+<img src="https://user-images.githubusercontent.com/27008803/225246389-7b452214-f3fe-4a70-bd3e-832a0ed34288.jpg" width="210" height="300" alt="二维码" />  | <img src="https://g-photo.oss-cn-shanghai.aliyuncs.com/hd15.jpg" width="210" height="210" alt="二维码" /> | <img src="https://user-images.githubusercontent.com/27008803/225246581-15e90f78-5438-4637-8e7d-14c68ca13b59.jpg" width="210" height="300" alt="二维码" />
 ---
 ## 更新日志
-- [x] 1.0.0   支持所有的OpenAI官方接口
-- [x] 1.0.1   支持自定义超时时间，自定义OkHttpClient拦截器，参考：OpenAiClient构造函数
-- [x] 1.0.2   支持Stream流式输出，参考：OpenAiStreamClient
-- [x] 1.0.3   支持最新的GPT-3.5-Turbo模型和Whisper-1模型，支持语音功能转文字，语音翻译。OpenAiClient和OpenAiStreamClient支持Builder构造，支持代理。
-- [x] 1.0.4   官方最新的ChatGPT Stream模式下的Api返回值改动。
-- [x] 1.0.5   支持自定义Api Host，使用Builder构建。参考下面的快速开始部分代码。
-- [x] 1.0.6   支持余额查询参考：[OpenAiClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiClientTest.java) 和[OpenAiStreamClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiStreamClientTest.java) creditGrants方法,支持最新GPT-4模型，参考：[ChatCompletion.Model](https://github.com/Grt1228/chatgpt-java/blob/main/src/main/java/com/unfbx/chatgpt/entity/chat/ChatCompletion.java/)构建消息体传入模型即可。感谢群友提供的余额接口地址以及[@PlexPt](https://github.com/PlexPt) 提供的模型参数
-- [x] 1.0.7   修复反序列化报错Bug：https://github.com/Grt1228/chatgpt-java/issues/79 ，Image SDK枚举值bug：https://github.com/Grt1228/chatgpt-java/issues/76 ，感谢两位朋友指出：[@CCc3120](https://github.com/CCc3120) 、[@seven-cm](https://github.com/seven-cm)
+- [x] 1.0.10  支持tokens计算：[TikTokensTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/TikTokensTest.java) ，更多详细的资料参考文档：[Tokens_README.md](https://github.com/Grt1228/chatgpt-java/blob/main/Tokens_README.md)
+- [x] 1.0.9   支持自定义key使用策略参考：[OpenAiClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiClientTest.java) 和[OpenAiStreamClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiStreamClientTest.java) ，弃用ChatGPTClient，优化Moderation接口
 - [x] 1.0.8   修改OpenAiClient和OpenAiStreamClient的自定义相关实现，超时设置，代理设置，自定义拦截器设置改为通过自定义OkHttpClient实现，将OkHttpClient交由用户自定义控制更加合理，可以实现更多的参数自定义。支持多Api Keys配置。
+- [x] 1.0.7   修复反序列化报错Bug：https://github.com/Grt1228/chatgpt-java/issues/79 ，Image SDK枚举值bug：https://github.com/Grt1228/chatgpt-java/issues/76 ，感谢两位朋友指出：[@CCc3120](https://github.com/CCc3120) 、[@seven-cm](https://github.com/seven-cm)
+- [x] 1.0.6   支持余额查询参考：[OpenAiClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiClientTest.java) 和[OpenAiStreamClientTest](https://github.com/Grt1228/chatgpt-java/blob/main/src/test/java/com/unfbx/chatgpt/OpenAiStreamClientTest.java) creditGrants方法,支持最新GPT-4模型，参考：[ChatCompletion.Model](https://github.com/Grt1228/chatgpt-java/blob/main/src/main/java/com/unfbx/chatgpt/entity/chat/ChatCompletion.java/)构建消息体传入模型即可。感谢群友提供的余额接口地址以及[@PlexPt](https://github.com/PlexPt) 提供的模型参数
+- [x] 1.0.5   支持自定义Api Host，使用Builder构建。参考下面的快速开始部分代码。
+- [x] 1.0.4   官方最新的ChatGPT Stream模式下的Api返回值改动。
+- [x] 1.0.3   支持最新的GPT-3.5-Turbo模型和Whisper-1模型，支持语音功能转文字，语音翻译。OpenAiClient和OpenAiStreamClient支持Builder构造，支持代理。
+- [x] 1.0.2   支持Stream流式输出，参考：OpenAiStreamClient
+- [x] 1.0.1   支持自定义超时时间，自定义OkHttpClient拦截器，参考：OpenAiClient构造函数
+- [x] 1.0.0   支持所有的OpenAI官方接口
 ---
 
 Q | A
@@ -68,7 +71,7 @@ OpenAi官方文档地址：https://platform.openai.com/docs/api-reference
 <dependency>
     <groupId>com.unfbx</groupId>
     <artifactId>chatgpt-java</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.10</version>
 </dependency>
 ```
 ## 2、流式客户端使用示例：
@@ -79,6 +82,9 @@ public class Test {
     public static void main(String[] args) {
         OpenAiStreamClient client = OpenAiStreamClient.builder()
                 .apiKey(Arrays.asList("sk-********","sk-********"))
+                //自定义key的获取策略：默认KeyRandomStrategy
+                //.keyStrategy(new KeyRandomStrategy())
+                .keyStrategy(new FirstKeyStrategy())
                 //自己做了代理就传代理地址，没有可不不传
 //                .apiHost("https://自己代理的服务器地址/")
                 .build();
@@ -114,6 +120,9 @@ public class Test {
                 .build();
         OpenAiStreamClient client = OpenAiStreamClient.builder()
                 .apiKey(Arrays.asList("sk-********","sk-********"))
+                //自定义key的获取策略：默认KeyRandomStrategy
+                //.keyStrategy(new KeyRandomStrategy())
+                .keyStrategy(new FirstKeyStrategy())
                 .okHttpClient(okHttpClient)
                 //自己做了代理就传代理地址，没有可不不传
 //                .apiHost("https://自己代理的服务器地址/")
@@ -148,6 +157,9 @@ public class Test {
     public static void main(String[] args) {
         OpenAiClient openAiClient = OpenAiClient.builder()
                 .apiKey(Arrays.asList("sk-********","sk-********"))
+                //自定义key的获取策略：默认KeyRandomStrategy
+                //.keyStrategy(new KeyRandomStrategy())
+                .keyStrategy(new FirstKeyStrategy())
                 //自己做了代理就传代理地址，没有可不不传
 //                .apiHost("https://自己代理的服务器地址/")
                 .build();
@@ -181,6 +193,9 @@ public class Test {
         //构建客户端
         OpenAiClient openAiClient = OpenAiClient.builder()
                 .apiKey(Arrays.asList("sk-********","sk-********"))
+                //自定义key的获取策略：默认KeyRandomStrategy
+                //.keyStrategy(new KeyRandomStrategy())
+                .keyStrategy(new FirstKeyStrategy())
                 .okHttpClient(okHttpClient)
                 //自己做了代理就传代理地址，没有可不不传
 //                .apiHost("https://自己代理的服务器地址/")
@@ -213,3 +228,15 @@ https://platform.openai.com/docs/api-reference/files/retrieve-content
 # Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Grt1228/chatgpt-java&type=Date)](https://star-history.com/#Grt1228/chatgpt-java&Date)
+
+
+# 站在巨人的肩膀
+鸣谢：
+OpenAi：https://openai.com/
+
+[knuddelsgmbh](https://github.com/knuddelsgmbh) 的[jtokkit](https://github.com/knuddelsgmbh/jtokkit) 的开源计算算法。
+
+
+# 如果项目对你有帮助，可以选择请我喝杯奶茶
+
+<img width="156" alt="微信截图_20230405222411" src="https://user-images.githubusercontent.com/27008803/230111508-3179cf30-e128-4b2e-9645-157266c491ce.png"><img width="164" alt="微信截图_20230405222357" src="https://user-images.githubusercontent.com/27008803/230111525-322f5036-d06d-46bb-94d1-db8ce9ed2adf.png">

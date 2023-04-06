@@ -21,6 +21,7 @@ import com.unfbx.chatgpt.entity.common.DeleteResponse;
 import com.unfbx.chatgpt.entity.files.UploadFileResponse;
 import com.unfbx.chatgpt.entity.fineTune.Event;
 import com.unfbx.chatgpt.entity.fineTune.FineTune;
+import com.unfbx.chatgpt.entity.fineTune.FineTuneDeleteResponse;
 import com.unfbx.chatgpt.entity.fineTune.FineTuneResponse;
 import com.unfbx.chatgpt.entity.images.*;
 import com.unfbx.chatgpt.entity.models.Model;
@@ -28,9 +29,9 @@ import com.unfbx.chatgpt.entity.moderations.Moderation;
 import com.unfbx.chatgpt.entity.moderations.ModerationResponse;
 import com.unfbx.chatgpt.entity.whisper.Whisper;
 import com.unfbx.chatgpt.entity.whisper.WhisperResponse;
-import com.unfbx.chatgpt.interceptor.HeaderAuthorizationInterceptor;
 import com.unfbx.chatgpt.interceptor.OpenAILogger;
 import com.unfbx.chatgpt.interceptor.OpenAiResponseInterceptor;
+import com.unfbx.chatgpt.utils.TikTokensUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -39,10 +40,7 @@ import org.junit.Test;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -73,11 +71,39 @@ public class OpenAiClientTest {
                 .build();
         v2 = OpenAiClient.builder()
                 //支持多key传入，请求时候随机选择
-                .apiKey(Arrays.asList("sk-********","sk-********"))
+                .apiKey(Arrays.asList("sk-***********","sk-*********"))
+                //自定义key的获取策略：默认KeyRandomStrategy
+                //.keyStrategy(new KeyRandomStrategy())
+                .keyStrategy(new FirstKeyStrategy())
                 .okHttpClient(okHttpClient)
                 //自己做了代理就传代理地址，没有可不不传
 //                .apiHost("https://自己代理的服务器地址/")
                 .build();
+    }
+
+    @Test
+    public void chatTokensTest() {
+        //聊天模型：gpt-3.5
+        List<Message> messages = new ArrayList<>(2);
+        messages.add(Message.builder().role(Message.Role.USER).content("关注微信公众号：程序员的黑洞。").build());
+        messages.add(Message.builder().role(Message.Role.USER).content("进入chatgpt-java交流群获取最新版本更新通知。").build());
+        ChatCompletion chatCompletion = ChatCompletion
+                .builder()
+                .messages(messages)
+                .maxTokens((4096 - TikTokensUtil.tokens(ChatCompletion.Model.GPT_3_5_TURBO.getName(),messages)))
+                .build();
+        ChatCompletionResponse chatCompletionResponse = v2.chatCompletion(chatCompletion);
+        //获取请求的tokens数量
+        long tokens = chatCompletion.tokens();
+        //这种方式也可以
+//        long tokens = TikTokensUtil.tokens(chatCompletion.getModel(),messages);
+        log.info("Message集合文本：【{}】", messages, tokens);
+        log.info("本地计算的请求的tokens数{}", tokens);
+        log.info("本地计算的返回的tokens数{}", TikTokensUtil.tokens(chatCompletion.getModel(),chatCompletionResponse.getChoices().get(0).getMessage().getContent()));
+        log.info("---------------------------------------------------");
+        log.info("Open AI 官方计算的总的tokens数{}", chatCompletionResponse.getUsage().getTotalTokens());
+        log.info("Open AI 官方计算的请求的tokens数{}", chatCompletionResponse.getUsage().getPromptTokens());
+        log.info("Open AI 官方计算的返回的tokens数{}", chatCompletionResponse.getUsage().getCompletionTokens());
     }
 
     @Test
@@ -315,8 +341,15 @@ public class OpenAiClientTest {
     }
 
     @Test
+    public void moderationsv3() {
+        List<String> list = Arrays.asList("I want to kill them.");
+        ModerationResponse moderations = v2.moderations(list);
+        System.out.println(moderations);
+    }
+
+    @Test
     public void moderationsV2() {
-        Moderation moderation = Moderation.builder().input("I want to kill them.").build();
+        Moderation moderation = Moderation.builder().input(Arrays.asList("I want to kill them.")).build();
         ModerationResponse moderations = v2.moderations(moderation);
         System.out.println(moderations);
     }
@@ -377,7 +410,7 @@ public class OpenAiClientTest {
 
     @Test
     public void deleteFineTuneModel() {
-        DeleteResponse deleteResponse = v2.deleteFineTuneModel("ft-KohbEOCbPyNTyQmt5UV1F1cb");
+        FineTuneDeleteResponse deleteResponse = v2.deleteFineTuneModel("curie:ft-winter-2023-02-16-10-24-10");
         System.out.println(deleteResponse);
     }
 }
